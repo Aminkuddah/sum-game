@@ -1,46 +1,10 @@
 import React, { Component } from "react";
 import Choices from "./components/Choices";
 import uuid from "uuid";
+import { connect } from "react-redux";
+import { actionPlay, actionTick } from "./actions/gameAction";
 
 class App extends Component {
-  state = {
-    choices: [
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      },
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      },
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      },
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      },
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      },
-      {
-        id: uuid.v4(),
-        num: "?",
-        selected: false
-      }
-    ],
-    question: "?",
-    gameStatus: null,
-    time: 0
-  };
-
   play = () => {
     clearInterval(this.interval);
 
@@ -79,7 +43,7 @@ class App extends Component {
     }, 0);
 
     // Set to state
-    this.setState({
+    this.props.actionPlay({
       choices: initChoices,
       question: question,
       gameStatus: "play",
@@ -88,58 +52,18 @@ class App extends Component {
     this.interval = setInterval(this.tick, 1000);
   };
 
-  handleToggle = id => {
-    // console.log(id);
-
-    if (this.state.gameStatus === "play") {
-      const newChoice = this.state.choices.map(choice => {
-        if (choice.id === id) {
-          choice.selected = !choice.selected;
-          // console.log("choice.num", choice.num);
-        }
-        return choice;
-      });
-
-      const totalToggled = this.state.choices.reduce((prev, curr) => {
-        // console.log("curr.selected", curr.selected);
-        return curr.selected ? prev + 1 : prev;
-      }, 0);
-      console.log("totalToggled", totalToggled);
-
-      const totalChoosed = this.state.choices.reduce((prev, curr) => {
-        return curr.selected ? prev + curr.num : prev;
-      }, 0);
-      console.log("totalChoosed", totalChoosed);
-
-      let updatedGameStatus = this.state.gameStatus;
-
-      if (totalChoosed === this.state.question) {
-        updatedGameStatus = "win";
-        clearInterval(this.interval);
-        console.log("wiiiin");
-      } else if (totalToggled >= 4) {
-        updatedGameStatus = "fail";
-        clearInterval(this.interval);
-        console.log("faiiiiilll");
-      }
-
-      this.setState({
-        choices: [...newChoice],
-        question: this.state.question,
-        gameStatus: updatedGameStatus
-      });
-    }
-  };
-
   tick = () => {
-    let updatedState = this.state;
-    if (this.state.time <= 0) {
+    console.log("this.props", this.props);
+    let updatedState = this.props.fullState;
+    if (this.props.time <= 0) {
       updatedState.gameStatus = "fail";
       clearInterval(this.interval);
     } else {
+      // this.props.actionTick(this.props.time - 1);
       updatedState.time -= 1;
     }
-    this.setState(updatedState);
+    console.log("this.props.time", this.props.time);
+    this.props.actionTick(updatedState);
   };
 
   render() {
@@ -151,15 +75,15 @@ class App extends Component {
               <div
                 style={{ transition: "all 0.5s" }}
                 className={
-                  this.state.gameStatus === "win"
+                  this.props.gameStatus === "win"
                     ? "card yellow pulse"
-                    : this.state.gameStatus === "fail"
+                    : this.props.gameStatus === "fail"
                     ? "card deep-orange white-text"
                     : "card"
                 }
               >
                 <div className="card-content">
-                  <h1 className="center">{this.state.question}</h1>
+                  <h1 className="center">{this.props.question}</h1>
                 </div>
               </div>
             </div>
@@ -167,10 +91,10 @@ class App extends Component {
           <div className="progress ">
             <div
               className="determinate"
-              style={{ width: `${this.state.time}0%` }}
+              style={{ width: `${this.props.time}0%` }}
             />
           </div>
-          <Choices props={this.state} toggle={this.handleToggle} />
+          <Choices />
           <div className="center">
             {/* <button className="btn btn-large" onClick={this.play}>
               Play
@@ -179,14 +103,14 @@ class App extends Component {
               onClick={this.play}
               href="#!"
               className={`btn-floating btn-large cyan ${
-                this.state.gameStatus !== "play" &&
-                this.state.gameStatus !== "win"
+                this.props.gameStatus !== "play" &&
+                this.props.gameStatus !== "win"
                   ? "pulse"
                   : ""
               }`}
             >
               <i className="material-icons">
-                {this.state.gameStatus ? "loop" : "play_arrow"}
+                {this.props.gameStatus ? "loop" : "play_arrow"}
               </i>
             </a>
           </div>
@@ -196,4 +120,26 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  choices: state.choices,
+  question: state.question,
+  gameStatus: state.gameStatus,
+  time: state.time,
+  fullState: state
+});
+
+const mapDispatchToProps = {
+  actionPlay: gameState => actionPlay(gameState),
+  actionTick: time => actionTick(time)
+};
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     deletePost: id => dispatch(deletePost(id))
+//   };
+// };
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
