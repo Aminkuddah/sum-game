@@ -53,17 +53,24 @@ class App extends Component {
   };
 
   tick = () => {
-    console.log("this.props", this.props);
-    let updatedState = this.props.fullState;
+    // console.log("this.props", this.props);
+    let updatedTick = {
+      gameStatus: this.props.gameStatus,
+      time: this.props.time
+    };
     if (this.props.time <= 0) {
-      updatedState.gameStatus = "fail";
+      updatedTick.gameStatus = "fail";
       clearInterval(this.interval);
     } else {
       // this.props.actionTick(this.props.time - 1);
-      updatedState.time -= 1;
+      updatedTick.time -= 1;
     }
-    console.log("this.props.time", this.props.time);
-    this.props.actionTick(updatedState);
+    // console.log("this.props.time", this.props.time);
+    this.props.actionTick(updatedTick);
+  };
+
+  stopTick = () => {
+    clearInterval(this.interval);
   };
 
   render() {
