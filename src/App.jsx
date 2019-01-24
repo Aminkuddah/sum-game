@@ -101,7 +101,7 @@ class App extends Component {
               style={{ width: `${this.props.time}0%` }}
             />
           </div>
-          <Choices />
+          <Choices clearInterval={this.stopTick} />
           <div className="center">
             {/* <button className="btn btn-large" onClick={this.play}>
               Play
