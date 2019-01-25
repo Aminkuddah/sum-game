@@ -131,13 +131,12 @@ const mapStateToProps = state => ({
   choices: state.choices,
   question: state.question,
   gameStatus: state.gameStatus,
-  time: state.time,
-  fullState: state
+  time: state.time
 });
 
 const mapDispatchToProps = {
   actionPlay: gameState => actionPlay(gameState),
-  actionTick: time => actionTick(time)
+  actionTick: updatedTick => actionTick(updatedTick)
 };
 
 // const mapDispatchToProps = dispatch => {
