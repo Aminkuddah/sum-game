@@ -89,8 +89,14 @@ export class Choices extends Component {
 const mapStateToProps = state => ({
   choices: state.choices,
   question: state.question,
-  gameStatus: state.gameStatus,
-  time: state.time
+  gameStatus: state.gameStatus
 });
 
-export default connect(mapStateToProps)(Choices);
+const mapDispatchToProps = {
+  toggleChoices: updatedState => toggleChoices(updatedState)
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Choices);
