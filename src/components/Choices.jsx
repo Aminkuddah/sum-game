@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { toggleChoices } from "../actions/gameAction";
 
 export class Choices extends Component {
   handleToggle = id => {
