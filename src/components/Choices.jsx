@@ -28,17 +28,16 @@ export class Choices extends Component {
 
       if (totalChoosed === this.props.question) {
         updatedGameStatus = "win";
-        clearInterval(this.interval);
+        this.props.clearInterval();
         console.log("wiiiin");
       } else if (totalToggled >= 4) {
         updatedGameStatus = "fail";
-        clearInterval(this.interval);
+        this.props.clearInterval();
         console.log("faiiiiilll");
       }
 
-      this.setState({
+      this.props.toggleChoices({
         choices: [...newChoice],
-        question: this.props.question,
         gameStatus: updatedGameStatus
       });
     }
