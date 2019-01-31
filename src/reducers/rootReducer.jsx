@@ -1,38 +1,13 @@
 import uuid from "uuid";
 
 const initialState = {
-  choices: [
-    {
+  choices: [...Array(6)].map(() => {
+    return {
       id: uuid.v4(),
       num: "?",
       selected: false
-    },
-    {
-      id: uuid.v4(),
-      num: "?",
-      selected: false
-    },
-    {
-      id: uuid.v4(),
-      num: "?",
-      selected: false
-    },
-    {
-      id: uuid.v4(),
-      num: "?",
-      selected: false
-    },
-    {
-      id: uuid.v4(),
-      num: "?",
-      selected: false
-    },
-    {
-      id: uuid.v4(),
-      num: "?",
-      selected: false
-    }
-  ],
+    };
+  }),
   question: "?",
   gameStatus: null,
   time: 0
