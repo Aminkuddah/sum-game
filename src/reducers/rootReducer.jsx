@@ -16,11 +16,12 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case "ACTION_PLAY":
-      console.log("type", type);
       return { ...state, ...payload };
 
     case "ACTION_TICK":
-      // console.log("typeti", type);
+      return { ...state, ...payload };
+
+    case "TOGGLE_CHOICES":
       return { ...state, ...payload };
 
     default:
