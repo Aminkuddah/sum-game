@@ -1,4 +1,4 @@
-# Quatro.
+# Sum Game
 
 > Build with [React](https://github.com/facebook/react) and [Redux](https://github.com/reduxjs/redux).
 
