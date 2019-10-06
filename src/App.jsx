@@ -33,8 +33,6 @@ class App extends Component {
       const randomId = Math.floor(Math.random() * filters.length);
       selectFilters.push(filters[randomId]);
       filters.splice(randomId, 1);
-      // console.log("filters", filters);
-      // console.log("selectFilters", selectFilters);
     }
 
     // Sum selected filters to be question
@@ -53,7 +51,6 @@ class App extends Component {
   };
 
   tick = () => {
-    // console.log("this.props", this.props);
     let updatedTick = {
       gameStatus: this.props.gameStatus,
       time: this.props.time
@@ -62,10 +59,8 @@ class App extends Component {
       updatedTick.gameStatus = "fail";
       clearInterval(this.interval);
     } else {
-      // this.props.actionTick(this.props.time - 1);
       updatedTick.time -= 1;
     }
-    // console.log("this.props.time", this.props.time);
     this.props.actionTick(updatedTick);
   };
 
@@ -138,12 +133,6 @@ const mapDispatchToProps = {
   actionPlay: gameState => actionPlay(gameState),
   actionTick: updatedTick => actionTick(updatedTick)
 };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     deletePost: id => dispatch(deletePost(id))
-//   };
-// };
 
 export default connect(
   mapStateToProps,
